@@ -23,14 +23,35 @@ def main(s):
     para_file = os.path.join(config_folder, 'para_'+s+'.txt')
     paras = np.loadtxt(para_file)
 
+
+    mode_file = os.path.join(config_folder, 'mode_'+s+'.txt')
+    mode = ''
+    with open(mode_file, 'r') as modes_file:
+        mode = modes_file.readline().strip()
+    
+    n = paras[0]
+    h = paras[1]
+
+
     interarrival_file = os.path.join(config_folder, 'interarrival_'+s+'.txt')
+    if (mode == 'random'):
+
+        with open(interarrival_file) as ia_file:
+            lam, a2l, a2u = ia_file.readline().strip().split(' ')
+            ps = ia_file.readline().strip().split(' ')
+            J = len(ps)
+
+            [mu, alph] = np.loadtxt(service_file)
+
+            print(f'lam: {lam}, a2l: {a2l}, a2u: {a2u}\nps: {" ".join([p for p in ps])}\nJ: {J}\nmu: {mu}, alph: {alph}')
+        
+        return
+    
     interarrival_times = np.loadtxt(interarrival_file)
 
-    mrt_string, dep_string = sim(paras[0], paras[1], interarrival_times, service_times)
+    mrt_string, dep_string = sim(n, h, interarrival_times, service_times)
 
 
-    # Maximum number of sub-jobs per job
-    J = service_times.shape[1]
     
 
     out_folder = 'output'
