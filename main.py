@@ -8,7 +8,7 @@ to a file.
 import sys 
 import os
 import numpy as np
-
+from src.sim import sim
 
 def main(s):
     
@@ -19,7 +19,17 @@ def main(s):
     service_file = os.path.join(config_folder,'service_'+s+'.txt')
     
     service_times = np.loadtxt(service_file)
-    
+
+    para_file = os.path.join(config_folder, 'para_'+s+'.txt')
+    paras = np.loadtxt(para_file)
+
+    interarrival_file = os.path.join(config_folder, 'interarrival_'+s+'.txt')
+    interarrival_times = np.loadtxt(interarrival_file)
+
+    a =sim(paras[0], paras[1], interarrival_times, service_times)
+    print(a[0], end='')
+    print(a[1], end='')
+
     # Maximum number of sub-jobs per job
     J = service_times.shape[1]
     
