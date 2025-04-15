@@ -26,20 +26,23 @@ def main(s):
     interarrival_file = os.path.join(config_folder, 'interarrival_'+s+'.txt')
     interarrival_times = np.loadtxt(interarrival_file)
 
-    a =sim(paras[0], paras[1], interarrival_times, service_times)
-    print(a[0], end='')
-    print(a[1], end='')
+    mrt_string, dep_string = sim(paras[0], paras[1], interarrival_times, service_times)
+
 
     # Maximum number of sub-jobs per job
     J = service_times.shape[1]
     
-    # As a demonstration, write to a file called dummy_*.txt
-    # in the output directory 
+
     out_folder = 'output'
-    out_file = os.path.join(out_folder,'dummy_'+s+'.txt')
-    
-    with open(out_file,'w') as file:
-        file.writelines('The maximum number of sub-jobs per job is '+str(J)+'\n')
+    mrt_file = os.path.join(out_folder,'mrt_'+s+'.txt')
+    with open(mrt_file,'w') as file:
+        file.writelines(mrt_string)
+
+    out_folder = 'output'
+    dep_file = os.path.join(out_folder,'dep_'+s+'.txt')
+    with open(dep_file,'w') as file:
+        file.writelines(dep_string)
+
     
 if __name__ == "__main__":
    main(sys.argv[1])
