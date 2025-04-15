@@ -9,6 +9,7 @@ import sys
 import os
 import numpy as np
 from src.sim import sim
+from src.random_sim import random_sim
 
 def main(s):
     
@@ -38,12 +39,14 @@ def main(s):
 
         with open(interarrival_file) as ia_file:
             lam, a2l, a2u = ia_file.readline().strip().split(' ')
-            ps = ia_file.readline().strip().split(' ')
+            ps = np.array(ia_file.readline().strip().split(' '), dtype=np.float64)
             J = len(ps)
 
             [mu, alph] = np.loadtxt(service_file)
 
-            print(f'lam: {lam}, a2l: {a2l}, a2u: {a2u}\nps: {" ".join([p for p in ps])}\nJ: {J}\nmu: {mu}, alph: {alph}')
+            random_sim(np.float64(lam), np.float64(a2l), np.float64(a2u), ps, np.float64(mu), np.float64(alph))
+
+            # print(f'lam: {lam}, a2l: {a2l}, a2u: {a2u}\nps: {" ".join([p for p in ps])}\nJ: {J}\nmu: {mu}, alph: {alph}')
         
         return
     
