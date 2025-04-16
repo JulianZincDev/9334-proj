@@ -12,7 +12,7 @@ def format_output(mrt: float, finished_jobs: list[tuple[float, float]]):
     return (mrt_string, f'{dep_string}\n')
 
 
-def sim(n: int, h: int, interarrival_times: Iterable[np.float64], service_times: NDArray[np.float64]):
+def sim(n: int, h: int, interarrival_times: Iterable[np.float64], service_times: Iterable[Iterable[np.float64]]):
     # [(job_num, sub_job_num, service_time, arrival_time)]
     high_prio_queue: list[tuple[int, int, float, float]] = []
     low_prio_queue: list[tuple[int, int, float, float]] = []
