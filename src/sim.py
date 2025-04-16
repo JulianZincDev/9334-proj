@@ -104,7 +104,7 @@ def sim(n: int, h: int, interarrival_times: Iterable[np.float64], service_times:
 
 
 
-    return format_output(np.round(np.average(list(job_response_times.values())), 4), np.round(finished_jobs, 4))
+    return format_output(np.round(np.average(list(job_response_times.values())), 4), np.round(finished_jobs, 4)), [response_time for _, response_time in sorted(job_response_times.items())]
     
 
 

@@ -12,8 +12,9 @@ from src.sim import sim
 from src.RandomInterarrivalsIterator import RandomInterarrivalsIterator
 from src.RandomServiceTimesIterator import RandomServiceTimesIterator
 
-def write_output(mrt_string, dep_string, s):
+def write_output(mrt_string, dep_string, s, job_response_times = None):
     out_folder = 'output'
+    jrt_num = sys.argv[2] if len(sys.argv) > 2 else '0'
     mrt_file = os.path.join(out_folder,'mrt_'+s+'.txt')
     with open(mrt_file,'w') as file:
         file.writelines(mrt_string)
@@ -21,6 +22,11 @@ def write_output(mrt_string, dep_string, s):
     dep_file = os.path.join(out_folder,'dep_'+s+'.txt')
     with open(dep_file,'w') as file:
         file.writelines(dep_string)
+
+    if job_response_times:
+        jrt_file = os.path.join('jrt_traces', 'jrts_'+s+f'-{jrt_num}.txt')
+        with open(jrt_file, 'w') as traces_file:
+            traces_file.writelines([f'{str(jrt)}\n' for jrt in job_response_times])
 
 def main(s):
     # Open the config file service_*.txt to obtain the 
@@ -66,14 +72,15 @@ def main(s):
 
             # Then provide the iterators inplace of pre-determined interarrival_times and service_times, then the sim
             # function will loop over these iterators randomly generating the interarrivals and service times as it goes
-            mrt_string, dep_string = sim(n, h, interarrival_times, service_times)
-            write_output(mrt_string, dep_string, s)
+            (mrt_string, dep_string), job_response_times = sim(n, h, interarrival_times, service_times)
+
+            write_output(mrt_string, dep_string, s, job_response_times)
         
         return
     
     interarrival_times = np.loadtxt(interarrival_file)
 
-    mrt_string, dep_string = sim(n, h, interarrival_times, service_times)
+    (mrt_string, dep_string), _ = sim(n, h, interarrival_times, service_times)
     write_output(mrt_string, dep_string, s)
 
 
