@@ -23,7 +23,7 @@ def write_output(mrt_string, dep_string, s, job_response_times = None):
     with open(dep_file,'w') as file:
         file.writelines(dep_string)
 
-    if job_response_times:
+    if job_response_times and len(sys.argv) > 2:
         jrt_file = os.path.join('jrt_traces', 'jrts_'+s+f'-{jrt_num}.txt')
         with open(jrt_file, 'w') as traces_file:
             traces_file.writelines([f'{str(jrt)}\n' for jrt in job_response_times])
