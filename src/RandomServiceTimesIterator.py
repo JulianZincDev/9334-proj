@@ -1,6 +1,7 @@
 
 import numpy as np
 from numpy.typing import NDArray
+from .rng import rng
 
 class RandomServiceTimesIterator:
 
@@ -13,7 +14,7 @@ class RandomServiceTimesIterator:
         lower_prob_bounds = 0.00
         higher_prob_bounds = 0.00
 
-        job_number_randomizer = np.random.uniform(0, 1)
+        job_number_randomizer = rng.uniform(0, 1)
         # print(job_number_randomizer)
         # print(ps)
         num_sub_jobs = 1
@@ -41,11 +42,7 @@ class RandomServiceTimesIterator:
 
     def __next__(self):
         service_times = []
-        for i in range(self.find_num_sub_jobs()):
-            service_times.append(self.inverse_transformed_CDF(np.random.uniform(0, 1)))
+        for _ in range(self.find_num_sub_jobs()):
+            service_times.append(self.inverse_transformed_CDF(rng.uniform(0, 1)))
         return service_times
 
-a = RandomServiceTimesIterator(
-    np.float64(1.100), np.float64(1.210), np.array([np.float64(0.400), np.float64(0.300),
-                                                    np.float64(0.200), np.float64(0.050),
-                                                    np.float64(0.050)]))

@@ -1,5 +1,6 @@
 
 import numpy as np
+from .rng import rng
 
 class RandomInterarrivalsIterator:
 
@@ -14,13 +15,10 @@ class RandomInterarrivalsIterator:
         return self
 
     def __next__(self):
-        ia_time = (np.random.exponential(1 / self.lam)) * (np.random.uniform(self.a2l, self.a2u))
+        ia_time = (rng.exponential(1 / self.lam)) * (rng.uniform(self.a2l, self.a2u))
         self.time_passed += ia_time
         if (self.time_passed > self.time_end):
             self.time_passed = np.float64(0.00)
             raise StopIteration()
         
         return ia_time
-
-a = RandomInterarrivalsIterator(
-        np.float64(1.400), np.float64(0.600), np.float64(0.800), np.float64(10.00))

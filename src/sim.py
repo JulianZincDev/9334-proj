@@ -87,12 +87,18 @@ def sim(n: int, h: int, interarrival_times: Iterable[np.float64], service_times:
                 server_sub_jobs[(job_num, sub_job_num)] = (service_time, current_time)
 
 
+    # while (len(server_sub_jobs)):
+    #     for remaining_service_time, _ in list(server_sub_jobs.values()):
+    #         if (not len(server_sub_jobs)):
+    #             break
+    #         current_time += remaining_service_time
+    #         tick_server_sub_jobs(remaining_service_time)
+
     while (len(server_sub_jobs)):
-        for remaining_service_time, _ in list(server_sub_jobs.values()):
-            if (not len(server_sub_jobs)):
-                break
-            current_time += remaining_service_time
-            tick_server_sub_jobs(remaining_service_time)
+        times_left = [remaining for remaining, _ in server_sub_jobs.values()] + [np.inf]
+        time_step = min(times_left)
+        current_time += time_step
+        tick_server_sub_jobs(time_step)
 
 
 
