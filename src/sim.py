@@ -95,11 +95,12 @@ def sim(n: int, h: int, interarrival_times: Iterable[np.float64], service_times:
     #         tick_server_sub_jobs(remaining_service_time)
 
     while (len(server_sub_jobs)):
-        # Put it here to match the spec (but not the reference output)
 
         times_left = [remaining for remaining, _ in server_sub_jobs.values()] + [np.inf]
         time_step = min(times_left)
         current_time += time_step
+        
+        # Put it here to match the spec (but not the reference output)
         tick_server_sub_jobs(time_step)
         
         # THE BELOW LINES MATCH THE REFERENCE IMPLEMENTATION I THINK (but not the spec which says
