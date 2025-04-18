@@ -72,7 +72,7 @@ def main(s):
 
             # Then provide the iterators inplace of pre-determined interarrival_times and service_times, then the sim
             # function will loop over these iterators randomly generating the interarrivals and service times as it goes
-            (mrt_string, dep_string), job_response_times = sim(n, h, interarrival_times, service_times)
+            (mrt_string, dep_string), job_response_times = sim(n, h, interarrival_times, service_times, time_end)
 
             write_output(mrt_string, dep_string, s, job_response_times)
         

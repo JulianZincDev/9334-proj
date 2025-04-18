@@ -12,7 +12,7 @@ def format_output(mrt: float, finished_jobs: list[tuple[float, float]]):
     return (mrt_string, f'{dep_string}\n')
 
 
-def sim(n: int, h: int, interarrival_times: Iterable[np.float64], service_times: Iterable[Iterable[np.float64]]):
+def sim(n: int, h: int, interarrival_times: Iterable[np.float64], service_times: Iterable[Iterable[np.float64]], time_end = np.float64(np.inf)):
     # [(job_num, sub_job_num, service_time, arrival_time)]
     high_prio_queue: list[tuple[int, int, float, float]] = []
     low_prio_queue: list[tuple[int, int, float, float]] = []
@@ -95,13 +95,19 @@ def sim(n: int, h: int, interarrival_times: Iterable[np.float64], service_times:
     #         tick_server_sub_jobs(remaining_service_time)
 
     while (len(server_sub_jobs)):
+        # Put it here to match the spec (but not the reference output)
+
         times_left = [remaining for remaining, _ in server_sub_jobs.values()] + [np.inf]
         time_step = min(times_left)
         current_time += time_step
         tick_server_sub_jobs(time_step)
-
-
-
+        
+        # THE BELOW LINES MATCH THE REFERENCE IMPLEMENTATION I THINK (but not the spec which says
+        # specifically that the file should contain all the sub-jobs that hafe left the server by time_end)
+        # this would actually cause it to include up to 1 job that leaves later (as it waits for time to surpass time_end)
+        # if current_time > time_end:
+        #     print('hi')
+        #     break
 
 
     return format_output(np.round(np.average(list(job_response_times.values())), 4), np.round(finished_jobs, 4)), [response_time for _, response_time in sorted(job_response_times.items())]
