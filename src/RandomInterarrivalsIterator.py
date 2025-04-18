@@ -15,7 +15,20 @@ class RandomInterarrivalsIterator:
         return self
 
     def __next__(self):
-        ia_time = (rng.exponential(1 / self.lam)) * (rng.uniform(self.a2l, self.a2u))
+        # mean arrival rate = self.lam arrivals / minutes
+        # mean interarrival time = 1 / (self.lam arrivals / minutes)
+        #                        = minutes / (self.lam arrivals)
+        #                        = (1 / self.lam) minutes per arrival
+        #                        (average time for an arrival is (1 / self.lam) minutes)
+        a1k = rng.exponential(1 / self.lam)
+        # Then use numpy's exponential function to generate our first random number
+        # exponential with mean = 1 / self.lam.
+
+        # Then we have our bounds self.a2l, and self.a2u and we use numpy's uniform
+        # method to generate a random number uniformly distributed in the provided interval
+        a2k = rng.uniform(self.a2l, self.a2u)
+        ia_time = a1k * a2k
+
         self.time_passed += ia_time
         if (self.time_passed > self.time_end):
             self.time_passed = np.float64(0.00)
