@@ -101,13 +101,14 @@ def sim(n: int, h: int, interarrival_times: Iterable[np.float64], service_times:
         current_time += time_step
         
         # Put it here to match the spec (but not the reference output)
+        if current_time > time_end:
+            break
         tick_server_sub_jobs(time_step)
         
         # THE BELOW LINES MATCH THE REFERENCE IMPLEMENTATION I THINK (but not the spec which says
         # specifically that the file should contain all the sub-jobs that hafe left the server by time_end)
         # this would actually cause it to include up to 1 job that leaves later (as it waits for time to surpass time_end)
         # if current_time > time_end:
-        #     print('hi')
         #     break
 
 
